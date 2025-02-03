@@ -1,7 +1,6 @@
 package org.example;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,5 +25,30 @@ public class LeerArchivo {
             //throw new RuntimeException(e);
         }
         return null;
+    }
+
+    public static void actualizarFichero(ArrayList<String> lista){
+        vaciarFichero();
+        añadirComandos(lista);
+    }
+
+    private static void vaciarFichero(){
+        try (FileOutputStream fos = new FileOutputStream(path)) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void añadirComandos(ArrayList<String> lista){
+        try (FileWriter fw = new FileWriter(path);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            for (int i = 0; i < lista.size(); i++) {
+                bw.write(lista.get(i));
+                if(i != lista.size() - 1)
+                    bw.write(";");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
