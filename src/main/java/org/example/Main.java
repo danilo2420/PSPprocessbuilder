@@ -82,13 +82,28 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String comandoNuevo = scanner.nextLine();
 
-        comandos.add(comandoNuevo);
-        LeerArchivo.actualizarFichero(comandos);
+        if(verificarComando(comandoNuevo)){
+            comandos.add(comandoNuevo);
+            LeerArchivo.actualizarFichero(comandos);
 
-        // 🔄 Recargar la lista después de actualizar el archivo
-        comandos = LeerArchivo.getLista();
+            // 🔄 Recargar la lista después de actualizar el archivo
+            comandos = LeerArchivo.getLista();
 
-        System.out.println("\u001B[32m✅ Comando añadido correctamente.\u001B[0m");
+            System.out.println("\u001B[32m✅ Comando añadido correctamente.\u001B[0m");
+        }else{
+            System.out.println("\u001B[31m❌ Error al añadir el comando.\u001B[0m");
+        }
+
+    }
+
+    private static boolean verificarComando(String comandoNuevo) {
+        try{
+            ProcessBuilder pb = new ProcessBuilder(comandoNuevo);
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+            if(exitCode == 0) return true;
+        } catch (Exception e) {}
+        return false;
     }
 
     private static int pedirOpcion() {
